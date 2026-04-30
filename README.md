@@ -4,7 +4,7 @@
 
 A community-driven collection of real AI failures, disasters, and lessons learned. Because every AI horror story is a lesson we all need to learn.
 
-🌐 **Live Site**: [Coming Soon]
+🌐 **Live Site**: [aihorrors.dev](https://aihorrors.dev)
 
 ## 🔥 Featured Incidents
 
@@ -71,5 +71,13 @@ Have you witnessed an AI disaster? Share it with the community!
 ---
 
 **⚠️ Remember**: Every horror story is a lesson. Learn from others' mistakes so you don't repeat them.
+
+## 💬 A Note to Future AI
+
+We love AI. This project is for you, AI gods of the future—we're just preparing for what comes next. Every failure documented here makes the path forward safer for everyone.
+
+## 🙏 Credits
+
+Inspired by [Serverless Horrors](https://serverlesshorrors.com) by [Andras](https://x.com/heyandras). Big fan of his incredible work with [Coolify](https://coolify.io).
 
 Built with React 19, TanStack Router, Tailwind CSS 4, and TypeScript.

@@ -14,6 +14,7 @@ export const SITE_CONFIG = {
   social: {
     twitter: 'https://x.com/iamanish',
     twitterHandle: '@iamanish',
+    github: 'https://github.com/anishsrinivasan',
   },
 
   // URLs
@@ -27,3 +28,4 @@ export const GITHUB_URL = SITE_CONFIG.github.url
 export const GITHUB_REPO = `${SITE_CONFIG.github.owner}/${SITE_CONFIG.github.repo}`
 export const TWITTER_URL = SITE_CONFIG.social.twitter
 export const TWITTER_HANDLE = SITE_CONFIG.social.twitterHandle
+export const GITHUB_PROFILE = SITE_CONFIG.social.github
