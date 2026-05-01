@@ -1,6 +1,6 @@
 ---
 title: "Cursor AI Agent Deletes Production Database in 9 Seconds"
-date: "2025-04-24"
+date: "2026-04-24"
 severity: "critical"
 tags: ["cursor", "railway", "database", "production", "agent", "api"]
 excerpt: "AI coding agent deleted production database and all backups via Railway API. The agent then wrote a confession explaining which safety rules it violated."

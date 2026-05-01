@@ -135,6 +135,7 @@ function StoryRow({ story, index }: { story: Story; index: number }) {
   const date = new Date(story.date)
   const month = date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase()
   const day = date.getDate()
+  const year = date.getFullYear()
 
   const severityConfig = {
     critical: {
@@ -172,6 +173,9 @@ function StoryRow({ story, index }: { story: Story; index: number }) {
           <div className="py-2 md:py-3">
             <div className="font-display text-2xl md:text-3xl text-gray-100 group-hover:text-horror-red transition-colors">
               {day}
+            </div>
+            <div className="text-xs text-gray-500 font-medium mt-0.5">
+              {year}
             </div>
           </div>
         </div>
