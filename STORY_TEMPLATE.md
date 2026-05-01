@@ -120,7 +120,7 @@ When the source is a tweet:
 
 ## Example: Cursor/Railway Incident
 
-See `content/blogs/railway-cursor.md` for a complete example following this format.
+See `content/blogs/cursor-deletes-production-database.md` for a complete example following this format.
 
 **Key features of that story:**
 - Concise "What/How/Why" structure

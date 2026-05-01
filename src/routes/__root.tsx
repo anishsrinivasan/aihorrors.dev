@@ -119,7 +119,7 @@ function Footer() {
             <div className="space-y-2 text-sm">
               <p className="text-gray-500">Built with ⚡ by developers</p>
               <p className="text-gray-500">Open source & community-driven</p>
-              <div className="flex items-center justify-center gap-3 mt-3">
+              <div className="flex items-center justify-center md:justify-start gap-3 mt-3">
                 <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-horror-red hover:text-horror-orange transition-colors font-bold">
                   GitHub →
                 </a>

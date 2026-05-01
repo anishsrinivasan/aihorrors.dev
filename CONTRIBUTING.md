@@ -25,7 +25,7 @@ The main way to contribute is by sharing real AI disaster stories.
 
 **⚠️ IMPORTANT:** Stories should be **brief and scannable**. Users can follow links for full details.
 
-See [STORY_TEMPLATE.md](STORY_TEMPLATE.md) for complete guidelines and [content/blogs/railway-cursor.md](content/blogs/railway-cursor.md) for a real example.
+See [STORY_TEMPLATE.md](STORY_TEMPLATE.md) for complete guidelines and [content/blogs/cursor-deletes-production-database.md](content/blogs/cursor-deletes-production-database.md) for a real example.
 
 For AI agents: See [AI_AGENT_GUIDE.md](AI_AGENT_GUIDE.md) for automated draft-to-blog conversion.
 
