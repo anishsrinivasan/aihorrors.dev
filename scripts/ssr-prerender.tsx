@@ -263,6 +263,58 @@ async function renderRoute(route: RouteSpec) {
   }
 }
 
+async function render404() {
+  const history = createMemoryHistory({ initialEntries: ['/__not_found__'] })
+  const router = createRouter({ routeTree, history })
+  await router.load()
+  const app = renderToString(React.createElement(RouterProvider, { router }))
+
+  const meta = {
+    title: 'Page Not Found | AI HORRORS',
+    description: 'The story you are looking for does not exist or was moved. Browse all incidents at aihorrors.dev.',
+    url: `${SITE_URL}/404`,
+    image: `${SITE_URL}/og.png`,
+  }
+
+  let html = template
+  html = html.replace(/<title>.*?<\/title>/, `<title>${escapeHtml(meta.title)}</title>`)
+  html = html.replace(
+    /<meta name="description" content=".*?"[^>]*>/,
+    `<meta name="description" content="${escapeHtml(meta.description)}">`
+  )
+  html = html.replace(
+    /<meta name="robots" content=".*?"[^>]*>/,
+    `<meta name="robots" content="noindex, follow">`
+  )
+  html = html.replace(
+    /<meta property="og:title" content=".*?"[^>]*>/,
+    `<meta property="og:title" content="${escapeHtml(meta.title)}">`
+  )
+  html = html.replace(
+    /<meta property="og:description" content=".*?"[^>]*>/,
+    `<meta property="og:description" content="${escapeHtml(meta.description)}">`
+  )
+  html = html.replace(
+    /<meta property="og:url" content=".*?"[^>]*>/,
+    `<meta property="og:url" content="${meta.url}">`
+  )
+  html = html.replace(
+    /<meta name="twitter:title" content=".*?"[^>]*>/,
+    `<meta name="twitter:title" content="${escapeHtml(meta.title)}">`
+  )
+  html = html.replace(
+    /<meta name="twitter:description" content=".*?"[^>]*>/,
+    `<meta name="twitter:description" content="${escapeHtml(meta.description)}">`
+  )
+  html = html.replace(
+    /<link rel="canonical" href=".*?"[^>]*>/,
+    `<link rel="canonical" href="${SITE_URL}/">`
+  )
+  html = html.replace('<div id="root"></div>', `<div id="root">${app}</div>`)
+
+  writeFileSync(join(distPath, '404.html'), html)
+}
+
 function buildSitemap(): string {
   const lastmodForHome = stories.length > 0 ? toIso(stories[0].date) : new Date().toISOString()
   const entries = routes
@@ -288,6 +340,32 @@ function buildSitemap(): string {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries}
 </urlset>
+`
+}
+
+function buildLlmsTxt(): string {
+  const storyLines = stories
+    .map((story) => {
+      const url = `${SITE_URL}/story/${story.slug}`
+      return `- [${story.title}](${url}): ${story.excerpt}`
+    })
+    .join('\n')
+
+  return `# AI HORRORS
+
+> ${SITE_DESCRIPTION}
+
+AI HORRORS is a community-curated archive of real AI production failures. Each story documents what happened, the timeline, root causes, and lessons learned. The archive focuses on AI coding agents, autonomous tools, and LLM-driven systems that caused measurable damage in production.
+
+## Stories
+${storyLines}
+
+## Submit
+- [Submit your AI horror story](${SITE_URL}/contribute): Share an AI disaster you witnessed or experienced.
+
+## Optional
+- [RSS feed](${SITE_URL}/feed.xml): Full-content RSS for the entire archive.
+- [Sitemap](${SITE_URL}/sitemap.xml): All indexable URLs.
 `
 }
 
@@ -330,10 +408,16 @@ for (const route of routes) {
   await renderRoute(route)
 }
 
+await render404()
+console.log(`  ✓ /404.html`)
+
 writeFileSync(join(distPath, 'sitemap.xml'), buildSitemap())
 console.log(`  ✓ /sitemap.xml`)
 
 writeFileSync(join(distPath, 'feed.xml'), buildRssFeed())
 console.log(`  ✓ /feed.xml`)
 
-console.log(`✅ Pre-rendered ${routes.length} routes + sitemap + RSS feed`)
+writeFileSync(join(distPath, 'llms.txt'), buildLlmsTxt())
+console.log(`  ✓ /llms.txt`)
+
+console.log(`✅ Pre-rendered ${routes.length} routes + 404 + sitemap + RSS + llms.txt`)

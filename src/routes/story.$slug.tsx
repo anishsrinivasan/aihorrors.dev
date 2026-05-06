@@ -1,21 +1,35 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import ReactMarkdown from 'react-markdown'
-import { loadStory } from '@/lib/stories'
+import { loadStories, loadStory } from '@/lib/stories'
+import type { Story } from '@/types/story'
 import { cn } from '@/lib/utils'
 
 export const Route = createFileRoute('/story/$slug')({
   component: StoryPage,
   loader: async ({ params }) => {
-    const story = await loadStory(params.slug)
+    const [story, allStories] = await Promise.all([loadStory(params.slug), loadStories()])
     if (!story) {
-      throw redirect({ to: '/' })
+      throw notFound()
     }
-    return { story }
+    return { story, related: pickRelated(story, allStories, 3) }
   },
 })
 
+function pickRelated(current: Story, all: Story[], limit: number): Story[] {
+  const others = all.filter((s) => s.slug !== current.slug)
+  const currentTags = new Set(current.tags ?? [])
+  const scored = others
+    .map((s) => ({
+      story: s,
+      overlap: (s.tags ?? []).filter((t) => currentTags.has(t)).length,
+      time: new Date(s.date).getTime(),
+    }))
+    .sort((a, b) => b.overlap - a.overlap || b.time - a.time)
+  return scored.slice(0, limit).map((entry) => entry.story)
+}
+
 function StoryPage() {
-  const { story } = Route.useLoaderData()
+  const { story, related } = Route.useLoaderData()
 
   const severityConfig = {
     critical: {
@@ -190,8 +204,22 @@ function StoryPage() {
             </ReactMarkdown>
           </div>
 
+          {/* Related stories */}
+          {related.length > 0 && (
+            <aside aria-label="Related stories" className="mt-16 pt-8 border-t border-horror-red/20">
+              <h2 className="font-display text-xl md:text-2xl text-horror-orange tracking-tight mb-6 uppercase">
+                Related Incidents
+              </h2>
+              <div className="grid gap-4 md:grid-cols-3">
+                {related.map((rel) => (
+                  <RelatedCard key={rel.slug} story={rel} />
+                ))}
+              </div>
+            </aside>
+          )}
+
           {/* Back to all stories link */}
-          <div className="mt-16 pt-8 border-t border-horror-red/20 text-center">
+          <div className="mt-12 pt-8 border-t border-horror-red/20 text-center">
             <Link
               to="/"
               className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-horror-red transition-colors group"
@@ -205,5 +233,46 @@ function StoryPage() {
         </div>
       </article>
     </>
+  )
+}
+
+function RelatedCard({ story }: { story: Story }) {
+  const severityAccent = {
+    critical: 'border-horror-red/40 hover:border-horror-red',
+    high: 'border-horror-orange/40 hover:border-horror-orange',
+    medium: 'border-yellow-400/40 hover:border-yellow-400',
+  }[story.severity]
+
+  return (
+    <Link
+      to="/story/$slug"
+      params={{ slug: story.slug }}
+      className={cn(
+        'group flex flex-col bg-horror-gray/30 border p-5 transition-colors',
+        severityAccent
+      )}
+    >
+      <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-gray-500 mb-3">
+        <time>{story.date}</time>
+        <span className="h-2.5 w-px bg-horror-red/30" />
+        <span className="font-bold text-horror-red">{story.severity}</span>
+      </div>
+      <h3 className="font-display text-base md:text-lg text-gray-100 group-hover:text-horror-red transition-colors leading-snug tracking-tight mb-3 line-clamp-3">
+        {story.title}
+      </h3>
+      <p className="text-xs text-gray-400 leading-relaxed line-clamp-3 mb-4">{story.excerpt}</p>
+      {story.tags && story.tags.length > 0 && (
+        <div className="mt-auto flex flex-wrap gap-1.5">
+          {story.tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="bg-horror-orange/10 text-horror-orange/80 border border-horror-orange/20 px-1.5 py-0.5 text-[10px] uppercase tracking-wider font-bold"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </Link>
   )
 }
