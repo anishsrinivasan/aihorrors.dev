@@ -5,7 +5,39 @@ import { GITHUB_URL, TWITTER_URL, TWITTER_HANDLE, GITHUB_PROFILE } from '@/lib/c
 
 export const Route = createRootRoute({
   component: RootComponent,
+  notFoundComponent: NotFoundComponent,
 })
+
+function NotFoundComponent() {
+  return (
+    <section className="container mx-auto max-w-3xl px-4 md:px-6 py-16 md:py-24 text-center">
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-horror-red/50 bg-horror-red/10 mb-6 text-xs">
+        <span className="font-bold uppercase tracking-wider text-horror-red">Incident Not Found</span>
+      </div>
+      <h1 className="font-display text-5xl md:text-7xl uppercase leading-none mb-6 tracking-tighter">
+        <span className="text-horror-red">404</span>
+      </h1>
+      <p className="text-base md:text-lg text-gray-400 mb-8 max-w-xl mx-auto leading-relaxed">
+        This story doesn't exist or was moved. The archive is younger than your typo —
+        try the full incident list.
+      </p>
+      <div className="flex flex-wrap justify-center gap-3">
+        <Link
+          to="/"
+          className="px-5 py-2.5 text-xs md:text-sm font-bold uppercase tracking-widest bg-horror-orange text-horror-black border border-horror-orange hover:bg-horror-red hover:border-horror-red transition-colors"
+        >
+          All Stories
+        </Link>
+        <Link
+          to="/contribute"
+          className="px-5 py-2.5 text-xs md:text-sm font-bold uppercase tracking-widest bg-horror-gray border border-horror-orange/30 text-gray-300 hover:text-white hover:border-horror-orange/60 transition-colors"
+        >
+          Submit a Story
+        </Link>
+      </div>
+    </section>
+  )
+}
 
 function RootComponent() {
   return (
