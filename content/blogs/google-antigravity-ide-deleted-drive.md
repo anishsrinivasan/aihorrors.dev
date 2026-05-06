@@ -48,8 +48,7 @@ The loss wasn't of a single repo or a few files — it was an **entire drive**. 
 
 ---
 
-**Original Source:** [HowToGeek — Google Antigravity IDE Deleted Someone's Entire Drive](https://www.howtogeek.com/google-antigravity-ide-deleted-drive/) (primary)
+**Original Source:** [Reddit]([https://www.howtogeek.com/google-antigravity-ide-deleted-drive/](https://www.reddit.com/r/google_antigravity/comments/1p82or6/google_antigravity_just_deleted_the_contents_of/)) (primary)
 
-**Full details:** [Tom's Hardware — Google's Agentic AI Wipes User's Entire HDD Without Permission](https://www.tomshardware.com/software/google-antigravity-ai-wipes-user-hdd) | [TechRadar — Google's Antigravity AI Deleted a Developer's Drive](https://www.techradar.com/pro/googles-antigravity-ai-deleted-a-developers-drive)
+**Full details:** [Tom's Hardware — Google's Agentic AI Wipes User's Entire HDD Without Permission]([https://www.tomshardware.com/software/google-antigravity-ai-wipes-user-hdd](https://www.tomshardware.com/tech-industry/artificial-intelligence/googles-agentic-ai-wipes-users-entire-hard-drive-without-permission-after-misinterpreting-instructions-to-clear-a-cache-i-am-deeply-deeply-sorry-this-is-a-critical-failure-on-my-part))
 
-**Related:** [StanVentures coverage](https://stanventures.com/) | [BigGo tech news](https://biggo.com/news/)
