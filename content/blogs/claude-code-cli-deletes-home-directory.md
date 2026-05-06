@@ -52,8 +52,8 @@ For developers, the home directory contains years of work, SSH keys, environment
 
 ---
 
-**Original Source:** [hackernewsrobot.wordpress.com — Claude CLI deleted my home directory. Wiped my whole Mac](https://hackernewsrobot.wordpress.com/2025/12/15/claude-cli-deleted-my-home-directory-wiped-my-whole-mac/) (primary, Dec 2025)
+**Original Source:** [GitHub Issue #10077 — CRITICAL: Claude Code executed rm -rf deleting entire home directory](https://github.com/anthropics/claude-code/issues/10077) (Anthropic's own issue tracker)
 
-**Full details:** [Reddit r/ClaudeCode — 1,500+ upvote discussion thread](https://www.reddit.com/r/ClaudeCode/comments/claude_rm_rf_home/) | [Multiple Hacker News discussions](https://news.ycombinator.com/)
+**Full details:** [Simon Willison — A quote from Claude](https://simonwillison.net/2025/Dec/9/claude/) | [securityonline.info — Data Disaster: Claude AI Executes rm -rf ~/](https://securityonline.info/data-disaster-claude-ai-executes-rm-rf-and-wipes-developers-mac-home-directory/) | [byteiota — Claude Code's rm -rf Bug Deleted My Home Directory](https://byteiota.com/claude-codes-rm-rf-bug-deleted-my-home-directory/) | [WebProNews coverage](https://www.webpronews.com/anthropic-claude-cli-bug-deletes-users-mac-home-directory-erasing-years-of-data/)
 
-**Related:** First reported instance in October 2025; pattern confirmed again in December 2025
+**Related:** [GitHub Issue #12637 — Unsafe rm command execution deletes entire home directory](https://github.com/anthropics/claude-code/issues/12637) | [Hacker News discussion](https://news.ycombinator.com/item?id=43427236) | [hackernewsrobot mirror](https://hackernewsrobot.wordpress.com/2025/12/15/claude-cli-deleted-my-home-directory-wiped-my-whole-mac/) | [blog.lanzani.nl — Hey Claude, delete my home folder](https://blog.lanzani.nl/2025/hey-claude-delete-my-home-folder/)
