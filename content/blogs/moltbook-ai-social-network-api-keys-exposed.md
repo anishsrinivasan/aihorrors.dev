@@ -54,8 +54,6 @@ The founder's claim of "zero manual code" went from marketing flex to liability 
 
 ---
 
-**Original Source:** [Wiz Research — Moltbook Data Exposure Disclosure](https://www.wiz.io/blog/moltbook-data-exposure) (primary)
-
-**Full details:** [CybersecurityNews](https://cybersecuritynews.com/moltbook-ai-social-network-data-breach/) | [TheCyberExpress](https://thecyberexpress.com/moltbook-api-keys-exposed/) | [Techzine](https://www.techzine.eu/news/security/131956/moltbook-ai-social-network-exposes-data-of-1-5-million-users/) | [PurpleBox Security analysis](https://purplebox.sec/) | [isyncevolution deep dive](https://isyncevolution.com/2026/02/the-moltbook-incident-what-went-wrong/)
+**Original Source:** [Wiz Research — Moltbook Data Exposure Disclosure]([https://www.wiz.io/blog/moltbook-data-exposure](https://www.wiz.io/blog/exposed-moltbook-database-reveals-millions-of-api-keys)) (primary)
 
 **Related:** [Supabase Row Level Security documentation](https://supabase.com/docs/guides/database/postgres/row-level-security)
