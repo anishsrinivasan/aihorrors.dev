@@ -1,7 +1,6 @@
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import ReactMarkdown from 'react-markdown'
 import { loadStory } from '@/lib/stories'
-import type { Story } from '@/types/story'
 import { cn } from '@/lib/utils'
 
 export const Route = createFileRoute('/story/$slug')({
@@ -78,7 +77,7 @@ function StoryPage() {
                     config.color
                   )}>
                     <span>{config.icon}</span>
-                    <span>{config.badge}</span>
+                    <span>{config.label}</span>
                   </span>
                 </>
               )}

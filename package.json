@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "generate": "bunx tsx scripts/generate-stories.ts",
+    "og": "bunx tsx scripts/generate-og-images.tsx",
     "dev": "bun run generate && vite",
-    "build": "bun run generate && vite build && bunx tsx scripts/ssr-prerender.tsx",
+    "build": "bun run generate && vite build && bun run og && bunx tsx scripts/ssr-prerender.tsx",
     "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.169.0",
     "@tanstack/router-vite-plugin": "^1.166.45",
+    "@vercel/og": "^0.6.5",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
     "react": "^19.2.5",
