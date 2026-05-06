@@ -35,7 +35,7 @@ The Vercel security team independently flagged additional bugs. The claim of "cu
 
 This incident is a masterclass in **conflating speed with safety**. Vinext proved that AI can generate a functioning web framework faster and cheaper than a human team. It also proved that AI-generated infrastructure code can introduce systemic security flaws that human architects would catch in design review.
 
-The most dangerous detail: **the README advertised "no human review" as a feature**. In infrastructure software, that's not a flex — it's a liability disclosure. The Pragmatic Engineer later published a detailed critical analysis, noting that vinext's vulnerabilities weren't edge cases; they were predictable consequences of skipping security architecture.
+The most dangerous detail: **the README advertised "no human review" as a feature**. In infrastructure software, that's not a flex — it's a liability disclosure. Independent coverage from The Register and security analysis from Hacktron noted that vinext's vulnerabilities weren't edge cases; they were predictable consequences of skipping security architecture.
 
 ## Lessons Learned
 
@@ -56,8 +56,8 @@ The most dangerous detail: **the README advertised "no human review" as a featur
 
 ---
 
-**Original Source:** [Cloudflare Engineering Blog — Introducing vinext](https://blog.cloudflare.com/introducing-vinext/) (vendor announcement)
+**Original Source:** [Cloudflare Blog — How we rebuilt Next.js with AI in one week](https://blog.cloudflare.com/vinext/) (vendor announcement)
 
-**Full details:** [Hacktron.ai — Security Analysis of vinext](https://hacktron.ai/cloudflare-vinext-security-analysis) (independent research, Feb 2026) | [The Pragmatic Engineer — The Problem with AI-Built Frameworks](https://blog.pragmaticengineer.com/ai-built-frameworks-vinext/) (Mar 2026)
+**Full details:** [Hacktron AI — Vibe-Hacking Cloudflare's Vibe-Coded Next.js Replacement](https://www.hacktron.ai/blog/hacking-cloudflare-vinext) (independent research) | [The Register — Cloudflare vibe codes 94% of Next.js API 'in one week'](https://www.theregister.com/2026/02/25/cloudflare_nextjs_api_ai/) | [Cybernews — Cloudflare's AI-built Next.js replacement hit by security flaws](https://cybernews.com/security/hackers-find-critical-flaws-in-cloudflares-nextjs-alternative/)
 
-**Related:** [Vercel security team independent findings](https://vercel.com/security) | [OpenCode platform used for generation](https://opencode.ai/)
+**Related:** [GitHub — cloudflare/vinext](https://github.com/cloudflare/vinext) | [Paddo.dev — Vinext and the $1,100 Rewrite](https://paddo.dev/blog/vinext-test-suites-are-specs/)
