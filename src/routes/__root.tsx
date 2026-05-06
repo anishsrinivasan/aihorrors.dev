@@ -41,11 +41,11 @@ function Header() {
       <div className="container mx-auto px-4 md:px-6 py-4 md:py-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="group flex items-center gap-3 relative">
+          <Link to="/" className="group flex items-center gap-3 relative" aria-label="AI HORRORS — home">
             <div className="absolute -inset-2 bg-horror-red/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <h1 className="font-display text-3xl md:text-4xl xl:text-5xl text-horror-red relative z-10 tracking-tighter group-hover:animate-glitch">
+            <span className="font-display text-3xl md:text-4xl xl:text-5xl text-horror-red relative z-10 tracking-tighter group-hover:animate-glitch">
               AI HORRORS
-            </h1>
+            </span>
           </Link>
 
           {/* Navigation */}
