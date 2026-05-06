@@ -5,6 +5,7 @@ import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from '../src/routeTree.gen'
 import type { Story } from '../src/types/story'
+import { GITHUB_URL, TWITTER_URL } from '../src/lib/constants'
 
 const storiesPath = join(process.cwd(), 'src/data/stories.json')
 const stories: Story[] = JSON.parse(readFileSync(storiesPath, 'utf-8'))
@@ -17,9 +18,6 @@ const SITE_URL = 'https://aihorrors.dev'
 const SITE_NAME = 'AI HORRORS'
 const SITE_DESCRIPTION =
   'Real AI disasters from production: Cursor deleting databases in 9 seconds, Replit wiping prod, Antigravity nuking entire drives. Community-curated cautionary tales for engineers shipping AI.'
-const GITHUB_URL = 'https://github.com/anishsrinivasan/aihorrors.dev'
-const TWITTER_URL = 'https://x.com/iamanish'
-
 const ORGANIZATION = {
   '@type': 'Organization',
   name: SITE_NAME,

@@ -12,9 +12,16 @@ export const SITE_CONFIG = {
   },
 
   social: {
+    // Brand account — used for twitter:site, schema sameAs, brand links
+    twitter: 'https://x.com/aihorrorsdev',
+    twitterHandle: '@aihorrorsdev',
+    github: 'https://github.com/anishsrinivasan',
+  },
+
+  // Personal account of the creator — used only for "Created by" footer credit
+  creator: {
     twitter: 'https://x.com/iamanish',
     twitterHandle: '@iamanish',
-    github: 'https://github.com/anishsrinivasan',
   },
 
   // URLs
@@ -29,3 +36,5 @@ export const GITHUB_REPO = `${SITE_CONFIG.github.owner}/${SITE_CONFIG.github.rep
 export const TWITTER_URL = SITE_CONFIG.social.twitter
 export const TWITTER_HANDLE = SITE_CONFIG.social.twitterHandle
 export const GITHUB_PROFILE = SITE_CONFIG.social.github
+export const CREATOR_TWITTER_URL = SITE_CONFIG.creator.twitter
+export const CREATOR_TWITTER_HANDLE = SITE_CONFIG.creator.twitterHandle

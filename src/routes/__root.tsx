@@ -1,7 +1,14 @@
 import { createRootRoute, Link, Outlet, useRouterState } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { cn } from '@/lib/utils'
-import { GITHUB_URL, TWITTER_URL, TWITTER_HANDLE, GITHUB_PROFILE } from '@/lib/constants'
+import {
+  GITHUB_URL,
+  TWITTER_URL,
+  TWITTER_HANDLE,
+  GITHUB_PROFILE,
+  CREATOR_TWITTER_URL,
+  CREATOR_TWITTER_HANDLE,
+} from '@/lib/constants'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -170,11 +177,11 @@ function Footer() {
           </p>
           <p className="text-gray-600 text-xs mt-2">
             Created by{' '}
-            <a href={TWITTER_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-horror-red hover:text-horror-orange transition-colors">
+            <a href={CREATOR_TWITTER_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-horror-red hover:text-horror-orange transition-colors">
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
-              {TWITTER_HANDLE}
+              {CREATOR_TWITTER_HANDLE}
             </a>
             {' • '}
             <a href={GITHUB_PROFILE} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-horror-red hover:text-horror-orange transition-colors">
