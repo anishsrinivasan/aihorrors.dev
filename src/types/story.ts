@@ -4,6 +4,7 @@ export interface StoryFrontmatter {
   severity: 'critical' | 'high' | 'medium'
   tags: string[]
   excerpt: string
+  image?: string
 }
 
 export interface Story extends StoryFrontmatter {

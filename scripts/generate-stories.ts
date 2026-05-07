@@ -10,6 +10,7 @@ interface Story {
   tags: string[]
   excerpt: string
   content: string
+  image?: string
 }
 
 const storiesDir = join(process.cwd(), 'content/blogs')
@@ -36,7 +37,8 @@ for (const file of files) {
     severity: data.severity,
     tags: data.tags || [],
     excerpt: data.excerpt || content.slice(0, 200) + '...',
-    content
+    content,
+    ...(data.image ? { image: data.image } : {})
   })
 }
 
