@@ -39,10 +39,24 @@ function hashStory(story: Story): string {
         excerpt: story.excerpt,
         severity: story.severity,
         tags: story.tags,
-        v: 2, // bump to invalidate every cached image (e.g. on template change)
+        image: story.image,
+        v: 3, // bump to invalidate every cached image (e.g. on template change)
       })
     )
     .digest('hex')
+}
+
+function loadStoryImage(image: string): string | null {
+  const cleanPath = image.startsWith('/') ? image.slice(1) : image
+  const fullPath = join(process.cwd(), 'public', cleanPath)
+  if (!existsSync(fullPath)) {
+    console.warn(`  ⚠ image not found: ${fullPath}`)
+    return null
+  }
+  const buf = readFileSync(fullPath)
+  const ext = cleanPath.split('.').pop()?.toLowerCase() ?? 'png'
+  const mime = ext === 'jpg' || ext === 'jpeg' ? 'image/jpeg' : ext === 'webp' ? 'image/webp' : 'image/png'
+  return `data:${mime};base64,${buf.toString('base64')}`
 }
 
 const BRAND_RED = '#ff3333'
@@ -59,12 +73,14 @@ const severityLabel: Record<Story['severity'], string> = {
   medium: 'MEDIUM',
 }
 
-function renderOgJsx(story: Story) {
+function renderOgJsx(story: Story, imageDataUri: string | null) {
   const accent = severityColor[story.severity]
   const label = severityLabel[story.severity]
   const titleLength = story.title.length
-  // Auto-fit: long titles get smaller font
-  const titleSize = titleLength > 80 ? 56 : titleLength > 60 ? 64 : titleLength > 40 ? 76 : 88
+  const hasImage = imageDataUri !== null
+  // Auto-fit: long titles get smaller font; further shrink when sharing space with image
+  const baseTitleSize = titleLength > 80 ? 56 : titleLength > 60 ? 64 : titleLength > 40 ? 76 : 88
+  const titleSize = hasImage ? Math.round(baseTitleSize * 0.7) : baseTitleSize
 
   return React.createElement(
     'div',
@@ -128,22 +144,59 @@ function renderOgJsx(story: Story) {
         label
       )
     ),
-    // story title
+    // body row: title (and optional image)
     React.createElement(
       'div',
       {
         style: {
           display: 'flex',
           flex: 1,
+          flexDirection: 'row',
           alignItems: 'center',
-          fontSize: titleSize,
-          lineHeight: 1.05,
-          letterSpacing: '-0.025em',
+          gap: '48px',
           marginTop: '40px',
           marginBottom: '40px',
         },
       },
-      story.title
+      React.createElement(
+        'div',
+        {
+          style: {
+            display: 'flex',
+            flex: hasImage ? '1 1 55%' : '1 1 100%',
+            alignItems: 'center',
+            fontSize: titleSize,
+            lineHeight: 1.05,
+            letterSpacing: '-0.025em',
+          },
+        },
+        story.title
+      ),
+      hasImage
+        ? React.createElement(
+            'div',
+            {
+              style: {
+                display: 'flex',
+                flex: '1 1 45%',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                height: '100%',
+              },
+            },
+            React.createElement('img', {
+              src: imageDataUri!,
+              width: 380,
+              height: 380,
+              style: {
+                objectFit: 'contain',
+                border: `2px solid ${accent}80`,
+                boxShadow: `0 0 60px ${accent}40`,
+                borderRadius: '4px',
+              },
+            })
+          )
+        : null
     ),
     // bottom row: tags + URL
     React.createElement(
@@ -218,7 +271,8 @@ for (const story of stories) {
     continue
   }
 
-  const response = new ImageResponse(renderOgJsx(story), {
+  const imageDataUri = story.image ? loadStoryImage(story.image) : null
+  const response = new ImageResponse(renderOgJsx(story, imageDataUri), {
     width: 1200,
     height: 630,
     fonts: [

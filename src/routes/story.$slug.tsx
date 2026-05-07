@@ -198,6 +198,22 @@ function StoryPage() {
                 strong: ({ node, ...props }) => (
                   <strong className="text-gray-100 font-bold" {...props} />
                 ),
+                img: ({ node, src, alt, ...props }) => (
+                  <figure className="my-10">
+                    <img
+                      src={src}
+                      alt={alt ?? ''}
+                      loading="lazy"
+                      className="w-full max-w-2xl mx-auto block border border-horror-red/30 shadow-[0_0_40px_rgba(255,51,51,0.15)]"
+                      {...props}
+                    />
+                    {alt && (
+                      <figcaption className="mt-3 text-center text-xs md:text-sm text-gray-500 italic px-4 max-w-2xl mx-auto">
+                        {alt}
+                      </figcaption>
+                    )}
+                  </figure>
+                ),
               }}
             >
               {story.content}
