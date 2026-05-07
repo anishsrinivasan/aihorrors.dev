@@ -15,6 +15,12 @@ export const Route = createFileRoute('/story/$slug')({
   },
 })
 
+function extractYouTubeId(url: string | undefined): string | null {
+  if (!url) return null
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/)
+  return match?.[1] ?? null
+}
+
 function pickRelated(current: Story, all: Story[], limit: number): Story[] {
   const others = all.filter((s) => s.slug !== current.slug)
   const currentTags = new Set(current.tags ?? [])
@@ -134,9 +140,34 @@ function StoryPage() {
                 h4: ({ node, ...props }) => (
                   <h4 className="font-bold text-xl mt-8 mb-3 text-gray-300" {...props} />
                 ),
-                p: ({ node, ...props }) => (
-                  <p className="mb-4 leading-relaxed text-gray-300" {...props} />
-                ),
+                p: ({ node, ...props }) => {
+                  const children = (node?.children ?? []).filter(
+                    (c) => !(c.type === 'text' && /^\s*$/.test(c.value))
+                  )
+                  const onlyChild = children.length === 1 ? children[0] : null
+                  const linkHref =
+                    onlyChild && onlyChild.type === 'element' && onlyChild.tagName === 'a'
+                      ? (onlyChild.properties?.href as string | undefined)
+                      : undefined
+                  const ytId = extractYouTubeId(linkHref)
+                  if (ytId) {
+                    return (
+                      <figure className="my-10 max-w-2xl mx-auto">
+                        <div className="relative aspect-video border border-horror-red/30 shadow-[0_0_40px_rgba(255,51,51,0.15)]">
+                          <iframe
+                            src={`https://www.youtube-nocookie.com/embed/${ytId}`}
+                            title="Video walkthrough"
+                            loading="lazy"
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            className="absolute inset-0 w-full h-full"
+                          />
+                        </div>
+                      </figure>
+                    )
+                  }
+                  return <p className="mb-4 leading-relaxed text-gray-300" {...props} />
+                },
                 a: ({ node, href, ...props }) => {
                   // Just render Twitter links with special styling, no wrapper div
                   if (href?.includes('twitter.com') || href?.includes('x.com')) {
