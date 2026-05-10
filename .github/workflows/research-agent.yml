@@ -54,7 +54,7 @@ jobs:
 
       - name: Install agent deps
         working-directory: agent
-        run: bun install --frozen-lockfile=false
+        run: bun install --frozen-lockfile
 
       - name: Run research agent
         working-directory: agent
