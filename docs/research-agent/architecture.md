@@ -94,8 +94,14 @@ Every stage is intentionally permissive about partial failure:
   `errored`, move on.
 
 The state file is the single source of truth. As long as it persists, the
-agent is idempotent: running it 5 times in a row produces the same outcome as
-running it once.
+agent is idempotent: running it 5 times in a row produces the same outcome
+as running it once.
+
+In CI the state file is persisted via `actions/cache` (not committed to
+git) because `main` is protected and the workflow can't push directly. The
+committed `agent/state/seen.json` only seeds the very first run. See
+[dedup.md § Layer 1](dedup.md#layer-1--stateseenjson) for the full
+rationale and cache-eviction caveat.
 
 ## State machine for a candidate
 

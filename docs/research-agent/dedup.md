@@ -6,8 +6,20 @@ layers, plus an optional LLM tiebreaker (off by default, planned for v2).
 
 ## Layer 1 — `state/seen.json`
 
-A committed JSON file at `agent/state/seen.json` records every URL the agent
-has ever processed, by 16-char SHA-1 of the canonical URL.
+A JSON file at `agent/state/seen.json` records every URL the agent has ever
+processed, by 16-char SHA-1 of the canonical URL.
+
+**Where it lives depends on the runtime:**
+
+- **In CI:** the file is persisted via `actions/cache` between workflow runs.
+  Branch protection on `main` (and the agent never having write access to
+  protected branches) means the file cannot be committed to git from the
+  workflow. The cache is keyed `agent-state-<run_id>` with `restore-keys:
+  agent-state-` so each run picks up the most recent prior cache.
+- **Locally:** the file in the repo is your state. Edit/inspect freely.
+- **The committed `agent/state/seen.json`** is the bootstrap for the very
+  first CI run (when no cache exists yet). After that, the cache diverges
+  and is authoritative; the committed file is essentially frozen.
 
 ```json
 {
@@ -38,8 +50,15 @@ has ever processed, by 16-char SHA-1 of the canonical URL.
 | `errored` | drafting or PR creation failed |
 
 **Once an entry exists with any non-error outcome, the agent will never
-revisit that URL.** The state file is committed to git, so this dedup
-survives across CI runs and dev machines.
+revisit that URL.** In CI, the state file survives across runs via
+`actions/cache`; locally, via the in-repo file.
+
+**Cache eviction caveat:** GitHub evicts caches that haven't been accessed
+in 7 days. The agent runs daily, so eviction never triggers in normal
+operation. If the workflow is paused for >7 days, cache evicts and the
+next run starts with empty layer-1 state — but layers 2 and 3 still
+provide full dedup correctness, so this is a performance regression (more
+URLs re-evaluated) rather than a correctness one.
 
 ## Layer 2 — committed content
 

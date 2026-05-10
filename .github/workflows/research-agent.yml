@@ -56,6 +56,18 @@ jobs:
         working-directory: agent
         run: bun install --frozen-lockfile
 
+      # Restore the dedup ledger from the last run. Cache lives outside git so
+      # branch protection on `main` doesn't block state persistence. The exact
+      # key matches only the current run; restore-keys falls back to the most
+      # recent prior run's cache.
+      - name: Restore agent state
+        uses: actions/cache/restore@v4
+        with:
+          path: agent/state/seen.json
+          key: agent-state-${{ github.run_id }}
+          restore-keys: |
+            agent-state-
+
       - name: Run research agent
         working-directory: agent
         env:
@@ -69,13 +81,12 @@ jobs:
           FORCE_RUN: ${{ github.event.inputs.force_run == 'true' && '1' || '0' }}
         run: bun run index.ts
 
-      - name: Commit state changes if any (when no PR was opened)
-        # When the agent opens a PR, state is committed on that branch.
-        # When it only records skips/dupes, persist those to main.
-        if: github.event.inputs.dry_run != 'true'
-        run: |
-          if [[ -n "$(git status --porcelain agent/state/seen.json)" ]]; then
-            git add agent/state/seen.json
-            git commit -m "agent: update seen.json [skip ci]"
-            git push origin HEAD:main
-          fi
+      # Save the dedup ledger for the next run. `always()` so we persist even
+      # when the agent step errors mid-run (partial state is still valid). The
+      # dry_run gate prevents test runs from poisoning the cache.
+      - name: Save agent state
+        if: ${{ always() && github.event.inputs.dry_run != 'true' }}
+        uses: actions/cache/save@v4
+        with:
+          path: agent/state/seen.json
+          key: agent-state-${{ github.run_id }}

@@ -48,7 +48,7 @@ agent/                           ← the agent (own package.json)
 │   └── state.ts                 ← seen.json read/write
 ├── sources/                     ← one file per source (HN, Reddit, RSS…)
 ├── pipeline/                    ← filter → dedupe → score → draft → PR
-└── state/seen.json              ← persistent dedup ledger
+└── state/seen.json              ← persistent dedup ledger (cached in CI, file locally)
 
 .github/workflows/
 └── research-agent.yml           ← daily cron + manual trigger
