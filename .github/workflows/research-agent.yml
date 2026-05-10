@@ -1,0 +1,81 @@
+name: research-agent
+
+on:
+  schedule:
+    # 14:00 UTC daily.
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without opening PRs or mutating state"
+        required: false
+        type: boolean
+        default: false
+      force_run:
+        description: "Force the agent to run even when the open-PR backoff would normally skip it"
+        required: false
+        type: boolean
+        default: false
+      model:
+        description: "Override OPENROUTER_DRAFT_MODEL for this run only (e.g. anthropic/claude-haiku-4.5)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: research-agent
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Need full history so the agent can push branches.
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Configure git identity
+        run: |
+          git config user.name "ai-horrors-agent"
+          git config user.email "agent@aihorrors.dev"
+
+      - name: Install agent deps
+        working-directory: agent
+        run: bun install --frozen-lockfile=false
+
+      - name: Run research agent
+        working-directory: agent
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          # Per-run override (workflow_dispatch input) wins; otherwise fall back
+          # to the repo-level Actions variable; otherwise let config.ts default.
+          OPENROUTER_DRAFT_MODEL: ${{ github.event.inputs.model || vars.OPENROUTER_DRAFT_MODEL || '' }}
+          OPENROUTER_TIEBREAK_MODEL: ${{ vars.OPENROUTER_TIEBREAK_MODEL || '' }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ github.event.inputs.dry_run == 'true' && '1' || '0' }}
+          FORCE_RUN: ${{ github.event.inputs.force_run == 'true' && '1' || '0' }}
+        run: bun run index.ts
+
+      - name: Commit state changes if any (when no PR was opened)
+        # When the agent opens a PR, state is committed on that branch.
+        # When it only records skips/dupes, persist those to main.
+        if: github.event.inputs.dry_run != 'true'
+        run: |
+          if [[ -n "$(git status --porcelain agent/state/seen.json)" ]]; then
+            git add agent/state/seen.json
+            git commit -m "agent: update seen.json [skip ci]"
+            git push origin HEAD:main
+          fi
