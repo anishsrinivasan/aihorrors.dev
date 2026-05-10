@@ -59,6 +59,9 @@ async function main() {
   console.log(
     `[agent] dry_run=${config.dryRun} force_run=${config.forceRun} lookback=${config.lookbackDays}d model=${config.draftModel}`,
   );
+  console.log(
+    `[agent] state: ${state.seen.length} seen entries loaded (last_run=${state.last_run ?? "never"})`,
+  );
 
   // 1. Load context.
   const existing = loadExistingContent();

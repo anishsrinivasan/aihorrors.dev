@@ -6,7 +6,14 @@ export async function loadState(): Promise<State> {
   if (!(await file.exists())) {
     return { version: 1, last_run: null, seen: [] };
   }
-  return (await file.json()) as State;
+  try {
+    return (await file.json()) as State;
+  } catch (e) {
+    // Don't crash the run on a corrupted state file — start with empty state
+    // and let the next save overwrite. Layers 2/3 still handle dedup.
+    console.warn(`[state] failed to parse ${STATE_PATH}: ${(e as Error).message}. Starting fresh.`);
+    return { version: 1, last_run: null, seen: [] };
+  }
 }
 
 export async function saveState(state: State): Promise<void> {
